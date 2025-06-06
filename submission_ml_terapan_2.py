@@ -365,7 +365,7 @@ target_skin = 'oily'
 target_index = list(skin_type_labels).index(target_skin)
 
 df_train_transformed['similarity'] = similarity_matrix[:, target_index]
-df_train_transformed.reset_index(drop=True, inplace=True)
+df_train_transformed = df_train_transformed.reset_index(drop=True)
 
 df_recommendations = pd.merge(ds_train[['product_name', 'brand_name']], df_train_transformed, left_index=True, right_index=True)
 df_recommendations['target_skin_type'] = target_skin
@@ -400,6 +400,7 @@ def precision_at_k_content(recommendations, ds_test, target_skin=None, k=5):
     return len(relevant) / k
 
 precision = precision_at_k_content(recommendations, df_combined_test, target_skin)
+
 print(f"Precision@5: {precision:.2f}")
 
 def recall_at_k_content(recommendations, ds_test, target_skin=None, k=5):
