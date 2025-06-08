@@ -170,17 +170,60 @@ Selain itu terdapat nilai yang terduplikasi karena ada kemungkinan banyak review
 
 ## Data Preparation
 
-Tahap ini memastikan kualitas data telah baik sebelum digunakan dalam model machine learning. Pada tahap inilah proses transfomasi data akan dilakukan.
+Tahap ini memastikan kualitas data telah baik sebelum digunakan dalam model machine learning. Pada tahap inilah proses-proses transfomasi data yang diperlukan.
 
-Berikut proses yang dilakukan pada tahap ini:
+Sebelum itu, ada pula proses transformasi data yang sempat diterapkan pada tahap Data Understanding untuk keperluan eksplorasi.
+
+### Transformasi yang Sudah Diterapkan Sebelumnya
+
+Berikut transformasi data yang diperlukan pada tahap eksplorasi data:
+1. Menghapus Kolom yang Tidak Digunakan
+1. Memilih Fitur yang Relevan
+1. Menggabungkan Dataset
+
+#### 1. Menghapus Kolom yang Tidak Digunakan
+
+```python
+df_review = df_review.drop(columns=['Unnamed: 0'])
+```
+
+Pada awal memuat dataset review, terdapat kolom `Unnamed: 0` yang berupa identifier unik dari setiap baris review. Kolom ini tidak relevan terhadap fitur apapun sehingga dihapus saja dari `DataFrame`.
+
+#### 2. Memilih Fitur yang Relevan
+
+Saat melakukan eksplorasi data, ditemukan banyak missing values pada masing-masing dataset. Dengan ini, perlu dilakukan filter dengan memilih kolom-kolom yang relevan saja pada kedua dataset.
+
+```python
+df_product_relevant = df_product.copy()
+df_product_relevant = df_product_relevant[['product_name','brand_name','rating','reviews']]
+
+df_review_relevant = df_review.copy()
+df_review_relevant = df_review_relevant[['author_id','rating','is_recommended','skin_type','product_name','brand_name']]
+```
+
+Dengan ini, dataset akan terfokus pada kolom yang relevan, sehingga penanganan missing values kedepannya akan lebih optimal karena telah mengabaikan fitur yang tidak digunakan.
+
+#### 3. Menggabungkan Dataset
+
+Dataset produk dan review yang telah difilter relevansinya digabungkan menjadi satu melalui dataset review, karena sistem rekomendasi akan dibuat berdasarkan analisa review dari masing-masing produk.
+
+```python
+df_merged = pd.merge(df_review_relevant, df_product_relevant, on=['product_name', 'brand_name'], how='left', suffixes=('_reviews', '_products'))
+```
+
+Dengan dilakukannya proses ini, otomatis juga akan mempermudah proses pengerjaan proyek selanjutnya, sebab proses analisa, transformasi, dan pelatihan hanya perlu dilakukan dari satu sumber.
+
+### Transformasi Data yang Belum Diterapkan
+
+Adapun proses yang belum dilakukan dan akan diterapkan pada Data Preparation sebagai berikut:
 1. Menangani Missing Values
-2. Menyesuaikan Tipe Data
-3. Identifikasi dan Menangani Outliers
-4. Undersampling
-5. Data Splitting
-6. Feature Encoding & Scaling
+1. Menyesuaikan Tipe Data
+1. Identifikasi dan Menangani Outliers
+1. Undersampling
+1. Data Splitting
+1. Feature Encoding & Scaling
 
-### 1. Menangani Missing Values
+#### 1. Menangani Missing Values
 
 Missing values perlu ditangani agar tidak terjadi error pada model yang dikembangkan, sehingga hasil analisis menjadi lebih akurat.
 
@@ -190,7 +233,7 @@ df_merged = df_merged.dropna()
 
 Pada proyek ini, baris yang memiliki missing values akan dihapus dengan menjalankan kode di atas.
 
-### 2. Menyesuaikan Tipe Data
+#### 2. Menyesuaikan Tipe Data
 
 Terdapat beberapa kolom dengan tipe data yang belum sesuai seperti `is_recommended` dan `reviews`. Sehingga perlu dilakukan penyesuaian agar data bisa diproses dengan benar, dan mencegah error saat analisis atau training model.
 
@@ -201,7 +244,7 @@ df_merged['reviews'] = df_merged['reviews'].astype(int)
 
 Dengan menjalankan kode di atas, kolom `is_recommended` dan `reviews` akan diubah menjadi tipe integer.
 
-### 3. Identifikasi dan Menangani Outliers
+#### 3. Identifikasi dan Menangani Outliers
 
 Untuk mendeteksi outliers pada fitur numerikal, dibuatlah fungsi berikut.
 
@@ -230,7 +273,7 @@ Meskipun ditemukan banyak outliers, namun saya menganggap nilai ekstrem dari kol
 
 Contohnya pada kolom `rating_reviews` di mana banyak user yang memberi rating di angka 4-5, lalu ada juga user yang memberi rating 1 atau 2. Nilai-nilai ini mungkin bisa dianggap outliers secara statistik, namun sebenarnya masih masuk akal untuk dianggap sebagai sebuah nilai. Sehingga, pada kasus ini outliers tidak di-drop ataupun dilakukan manipulasi.
 
-### 4. Undersampling
+#### 4. Undersampling
 
 Pada tahap EDA telah diketahui bahwa untuk fitur `skin_type` terdapat ketidakseimbangan distribusi, sehingga perlu dilakukan undersampling agar tidak terjadi bias pada kelas mayoritas.
 
@@ -268,7 +311,7 @@ Untuk kelas `normal` dan `oily` tetap menggunakan dataset dengan jumlah awal. Se
 
 ![Undersampling](https://raw.githubusercontent.com/rfqgal/submission-ml-terapan-2/refs/heads/master/images/undersampling.png)
 
-### 5. Data Splitting
+#### 5. Data Splitting
 
 Tahap ini membagi dataset menjadi beberapa subset yang terpisah untuk tujuan pelatihan, validasi, dan pengujian model machine learning.
 
@@ -283,7 +326,7 @@ ds_train, ds_test = train_test_split(df_undersampled, test_size=0.2, random_stat
 
 Pada proyek ini, dataset dibagi menjadi data latih dan data uji (train dan test), dengan `test_size=0.2`. Itu berarti 80% dari keseluruhan data akan digunakan untuk pelatihan dan 20% sisanya untuk pengujian. Lalu `random_state=42` menjamin bahwa pembagian data selalu konsisten setiap kali kode dijalankan (reproducibility).
 
-### 6. Feature Encoding & Scaling
+#### 6. Feature Encoding & Scaling
 
 Pada tahap ini proses encoding dan scaling feature dilakukan. Proses scaling dengan standarisasi `StandardScaler`, juga dikenal sebagai penskalaan Z-score, berfungsi untuk mengubah skala pada suatu fitur sehingga memiliki rata-rata 0 dan standar deviasi 1. Sementara encoding dengan `OneHotEncoder` mengubah data kategoris menjadi format numerik biner sehingga dapat dimengerti oleh komputer.
 
