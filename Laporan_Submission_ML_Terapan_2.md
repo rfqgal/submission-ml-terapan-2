@@ -111,9 +111,18 @@ Dataset yang digunakan pada proyek ini bersumber dari Kaggle pada [tautan beriku
 
 #### 2. Identifikasi Missing Values, dan Duplicated Values
 
+Dataset awal, yaitu product dan review masing-masing memiliki missing values yang cukup banyak, dengan rincian seperti pada gambar berikut.
+
+![Missing Values Product](https://raw.githubusercontent.com/rfqgal/submission-ml-terapan-2/refs/heads/master/images/missing-values-product.png)
+![Missing Values Review](https://raw.githubusercontent.com/rfqgal/submission-ml-terapan-2/refs/heads/master/images/missing-values-review.png)
+
+Namun untuk sementara, missing values tersebut dapat diabaikan saja karena kedua dataset perlu digabungkan dengan memilih fitur yang relevan untuk proses modelling sistem rekomendasi.
+
+Berikut missing values yang terdapat dari gabungan dataset:
+
 ![Missing Values](https://raw.githubusercontent.com/rfqgal/submission-ml-terapan-2/refs/heads/master/images/missing-values.png)
 
-Setelah memilih fitur yang relevan untuk proses modeling sisten rekomendasi lalu melakukan merging dataset, pada gambar di atas dapat dilihat bawha terdapat banyak sekali missing values pada kolom is_recommended dan skin_type.
+Setelah memilih fitur yang relevan untuk proses modeling sistem rekomendasi, lalu melakukan merging dataset, pada gambar di atas dapat dilihat bahwa terdapat banyak missing values pada kolom is_recommended dan skin_type.
 
 ![Duplicated Values](https://raw.githubusercontent.com/rfqgal/submission-ml-terapan-2/refs/heads/master/images/duplicated-values.png)
 
