@@ -2,8 +2,6 @@
 
 ## Project Overview
 
-TODO: Do some paraphrase.
-
 Bagi kebanyakan orang, khususnya wanita penting untuk memperhatikan penampilan baik dari segi fashion, gaya hidup, dan wajah. Setiap orang memiliki kulit wajah dengan warna, tekstur yang berbeda-beda tergantung dari faktor keturunan, kondisi tubuh, dan iklim tempat dimana ia tinggal. Hal yang paling terlihat dari pandangan mata adalah kulit wajah.  Untuk tampil sempurna banyak orang yang rela mengeluarkan banyak uang untuk menjaga dan merawat kulit. 
 
 Menurut data internal Sociolla, sebanyak 17 persen Generasi Z yang rela mengeluarkan uang lebih dari Rp300 ribu untuk berbelanja produk kecantikan. Sementara itu, 35 persen lainnya memilih untuk berbelanja dengan bujet sekitar Rp150 ribu hingga Rp300 ribu. Berbanding balik dengan Generasi Z, 28 persen Milenial justru rela mengeluarkan uang lebih dari Rp 300 ribu untuk berbelanja skincare dan bodycare. Kemudian melalui survei ZAP Beauty Index  2024 menyatakan mayoritas wanita Indonesia rela merogoh kocek lebih dari Rp500 ribu per bulan untuk perawatan di klinik kecantikan.
@@ -30,8 +28,6 @@ Seperti yang diketahui jenis kulit wajah itu ada 3 yaitu Oily (berminyak), Norma
 - Mengetahui tingkat akurasi model sistem rekomendasi yang telah dikembangkan.
 
 ## Data Understanding
-
-TODO: Describe more.
 
 Dataset yang digunakan pada proyek ini bersumber dari Kaggle pada [tautan berikut](https://www.kaggle.com/datasets/nadyinky/sephora-products-and-skincare-reviews).
 
@@ -84,7 +80,10 @@ Dataset yang digunakan pada proyek ini bersumber dari Kaggle pada [tautan beriku
 - `eye_color`: warna mata penulis (cokelat, hijau, dsb)
 - `skin_type`: jenis kulit penulis (kombinasi, berminyak, dsb)
 - `hair_color`: warna rambut penulis (cokelat, merah marun, dsb)
-- `product_id`: identifier unik dari produk
+- `product_id`: identifier unik dari produk yang direview
+- `product_name`: nama dari produk yang direview
+- `brand_name`: brand dari produk yang direview
+- `price_usd`: harga USD dari produk yang direview
 
 ### Exploratory Data Analysis (EDA)
 
